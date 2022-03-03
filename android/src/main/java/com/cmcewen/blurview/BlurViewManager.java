@@ -1,9 +1,16 @@
 package com.cmcewen.blurview;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
+import com.facebook.react.uimanager.NativeViewHierarchyManager;
+import com.facebook.react.uimanager.UIBlock;
+import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -32,14 +39,14 @@ class BlurViewManager extends ViewGroupManager<BlurView> {
     @Override
     public @Nonnull BlurView createViewInstance(@Nonnull ThemedReactContext ctx) {
         BlurView blurView = new BlurView(ctx);
-        View decorView = Objects.requireNonNull(ctx.getCurrentActivity()).getWindow().getDecorView();
-        ViewGroup rootView = decorView.findViewById(android.R.id.content);
-        Drawable windowBackground = decorView.getBackground();
-        blurView.setupWith(rootView)
-            .setFrameClearDrawable(windowBackground)
-            .setBlurAlgorithm(new RenderScriptBlur(ctx))
-            .setBlurRadius(defaultRadius)
-            .setHasFixedTransformationMatrix(false);
+//        View decorView = Objects.requireNonNull(ctx.getCurrentActivity()).getWindow().getDecorView();
+//        ViewGroup rootView = decorView.findViewById(android.R.id.content);
+//        Drawable windowBackground = decorView.getBackground();
+//        blurView.setupWith(rootView)
+//            .setFrameClearDrawable(windowBackground)
+//            .setBlurAlgorithm(new RenderScriptBlur(ctx))
+//            .setBlurRadius(defaultRadius)
+//            .setHasFixedTransformationMatrix(false);
         return blurView;
     }
 
@@ -57,6 +64,25 @@ class BlurViewManager extends ViewGroupManager<BlurView> {
 
     @ReactProp(name = "downsampleFactor", defaultInt = defaultSampling)
     public void setDownsampleFactor(BlurView view, int factor) {
+//        View decorView = Objects.requireNonNull(ctx.getCurrentActivity()).getWindow().getDecorView();
+//        ViewGroup rootView = decorView.findViewById(android.R.id.content);
+//        Drawable windowBackground = decorView.getBackground();
+        ThemedReactContext mReactContext = (ThemedReactContext)view.getContext();
+//        UIManagerModule uiManagerModule = ((ThemedReactContext)view.getContext()).getNativeModule(UIManagerModule.class);
+//        View rootView = uiManagerModule.resolveView(factor);
 
+        UIManagerModule uiManager = mReactContext.getNativeModule(UIManagerModule.class);
+
+        uiManager.addUIBlock(nativeViewHierarchyManager -> {
+
+            View backgroundView = nativeViewHierarchyManager.resolveView(factor);
+
+            Drawable windowBackground = new ColorDrawable(Color.TRANSPARENT);
+            view.setupWith((ViewGroup) backgroundView)
+                    .setFrameClearDrawable(windowBackground)
+                    .setBlurAlgorithm(new RenderScriptBlur(view.getContext()))
+                    .setBlurRadius(defaultRadius)
+                    .setHasFixedTransformationMatrix(false);
+        });
     }
 }
