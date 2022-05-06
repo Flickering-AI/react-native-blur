@@ -75,14 +75,18 @@ class BlurViewManager extends ViewGroupManager<BlurView> {
 
         uiManager.addUIBlock(nativeViewHierarchyManager -> {
 
-            View backgroundView = nativeViewHierarchyManager.resolveView(factor);
+            try {
+                View backgroundView = nativeViewHierarchyManager.resolveView(factor);
 
-            Drawable windowBackground = new ColorDrawable(Color.TRANSPARENT);
-            view.setupWith((ViewGroup) backgroundView)
-                    .setFrameClearDrawable(windowBackground)
-                    .setBlurAlgorithm(new RenderScriptBlur(view.getContext()))
-                    .setBlurRadius(defaultRadius)
-                    .setHasFixedTransformationMatrix(false);
+                Drawable windowBackground = new ColorDrawable(Color.TRANSPARENT);
+                view.setupWith((ViewGroup) backgroundView)
+                        .setFrameClearDrawable(windowBackground)
+                        .setBlurAlgorithm(new RenderScriptBlur(view.getContext()))
+                        .setBlurRadius(defaultRadius)
+                        .setHasFixedTransformationMatrix(false);
+            } catch (Exception error) {
+                error.printStackTrace();
+            }
         });
     }
 }
