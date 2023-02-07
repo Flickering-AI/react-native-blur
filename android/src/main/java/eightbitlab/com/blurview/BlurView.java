@@ -13,7 +13,7 @@ import android.widget.FrameLayout;
 
 import static eightbitlab.com.blurview.BlockingBlurController.TRANSPARENT;
 
-import com.cmcewen.blurview.R;
+import com.reactnativecommunity.blurview.R;
 
 /**
  * FrameLayout that blurs its underlying content.
