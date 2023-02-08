@@ -11,7 +11,7 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 
 import eightbitlab.com.blurview.BlurView;
-import eightbitlab.com.blurview.RenderEffectBlur;
+//import eightbitlab.com.blurview.RenderEffectBlur;
 import eightbitlab.com.blurview.RenderScriptBlur;
 
 import java.util.Objects;
